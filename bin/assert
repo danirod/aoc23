@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd "$(dirname $0)"/..
+comm <(bin/control) <(cat control)

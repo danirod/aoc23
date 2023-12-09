@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cd "$(dirname $0)"/..
+mvn -q clean package
+for f in src/main/java/es/danirod/aoc/aoc23/Day*.java; do
+	FILE=$(basename $f | cut -f1 -d.)
+	mvn -q exec:java -Dexec.mainClass="es.danirod.aoc.aoc23.$FILE"
+done
