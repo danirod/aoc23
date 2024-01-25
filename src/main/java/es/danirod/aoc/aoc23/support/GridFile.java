@@ -1,17 +1,32 @@
 package es.danirod.aoc.aoc23.support;
 
+import es.danirod.aoc.aoc23.AocUtils;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class GridFile {
 
-    public static record Cell(int x, int y, char value) {
+    public static record Cell(Point point, char value) {
 
+        public int x() {
+            return point.x();
+        }
+        
+        public int y() {
+            return point.y();
+        }
+        
     }
 
     private final char[][] chars;
+
+    @Override
+    public String toString() {
+        return AocUtils.gridToString(chars);
+    }
 
     public GridFile(List<String> lines) throws IOException {
         this.chars = lines.stream().map(String::toCharArray).toArray(char[][]::new);
@@ -59,7 +74,7 @@ public class GridFile {
 
     public Stream<Cell> cells() {
         return IntStream.range(0, lines())
-                .mapToObj(y -> IntStream.range(0, cols()).mapToObj(x -> new Cell(x, y, at(x, y))))
+                .mapToObj(y -> IntStream.range(0, cols()).mapToObj(x -> new Cell(new Point(x, y), at(x, y))))
                 .reduce(Stream.empty(), (prev, next) -> Stream.concat(prev, next));
     }
 }
